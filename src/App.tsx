@@ -32,6 +32,18 @@ interface ITodo {
    
   } , [])
 
+  // useEffect(() =>{
+  //   const savedTodoList = localStorage.getItem('todoList');
+  //   if(savedTodoList){
+  //     setTodoList(JSON.parse(savedTodoList));
+  //   }
+  // },[])
+
+  // useEffect(() =>{
+  //   localStorage.setItem('todoList' , JSON.stringify(todoList))
+  // },[todoList])
+
+  
 
   const handleSubmit = (e:  React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,8 +83,12 @@ interface ITodo {
   // }
 
   const sortTodo = () =>{
-    const copyTodo = [...todoList];
-    copyTodo.sort();
+    const copyTodo: ITodo[] = [...todoList];
+    copyTodo.sort((firstObject:ITodo , secondObject:ITodo) =>{
+      if(firstObject.text > secondObject.text) return 1;
+      if(firstObject.text < secondObject.text) return -1;
+      return 0;
+    })
     setTodoList(copyTodo)
   }
 
@@ -93,9 +109,9 @@ interface ITodo {
           onChange={e => setInputValue(e.target.value)}
           required/>
           <button type='submit'> Add Todo</button>
-          <button onClick={clearTodo}>Clear</button>
-          <button onClick={sortTodo}>Sort</button>
         </form>
+        <button onClick={clearTodo}>Clear</button>
+        <button onClick={sortTodo}>Sort</button> 
       </div>
       <div className='show-todo'>
         {todoList.map((todo:ITodo , index:number) => (
